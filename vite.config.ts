@@ -6,15 +6,8 @@
 // You can pass additional config via defineConfig({ vite: { ... } }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
-// Disable Cloudflare for Vercel builds and use Vercel preset instead.
-const isVercel = process.env.VERCEL === "1";
-
 export default defineConfig({
   tanstackStart: {
-    server: {
-      entry: "server",
-      preset: isVercel ? "vercel" : undefined,
-    },
+    server: { entry: "server" },
   },
-  cloudflare: isVercel ? false : undefined,
 });
