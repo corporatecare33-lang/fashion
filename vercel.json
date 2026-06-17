@@ -1,8 +1,9 @@
 {
   "buildCommand": "node vercel-build.cjs",
-  "installCommand": "npm install",
-  "outputDirectory": ".vercel/output/static",
+  "installCommand": "npm install --no-optional --legacy-peer-deps",
+  "outputDirectory": "dist/client",
   "framework": null,
+  "nodeVersion": "20.x",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
