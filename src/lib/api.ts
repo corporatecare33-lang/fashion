@@ -13,6 +13,48 @@ const api = axios.create({
 });
 
 // Types
+export interface Product {
+  id: number;
+  title: string;
+  slug: string;
+  description: string;
+  price: string;
+  sale_price?: string;
+  image: string;
+  images?: string[];
+  sku: string;
+  stock: number;
+  category_id: number;
+  category?: {
+    id: number;
+    name: string;
+    slug: string;
+  };
+  featured: boolean;
+  on_sale: boolean;
+  status: string;
+  sales_count: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Category {
+  id: number;
+  name: string;
+  slug: string;
+  description?: string;
+  image?: string;
+  product_count?: number;
+}
+
+export interface PaginatedProducts {
+  data: Product[];
+  current_page: number;
+  last_page: number;
+  per_page: number;
+  total: number;
+}
+
 export interface OrderItem {
   product_id: number;
   quantity: number;
@@ -71,7 +113,31 @@ export interface PaginatedOrders {
   total: number;
 }
 
-// API Functions
+// Product API functions
+export const getProducts = async (params?: {
+  per_page?: number;
+  search?: string;
+  category_id?: number;
+}): Promise<PaginatedProducts> => {
+  const response = await api.get('/products', { params });
+  return response.data;
+};
+
+export const getProduct = async (slug: string): Promise<Product> => {
+  const response = await api.get(`/products/${slug}`);
+  return response.data;
+};
+
+export const getCategories = async (): Promise<Category[]> => {
+  const response = await api.get('/categories');
+  return response.data;
+};
+
+// Add methods to api object for convenience
+api.getProducts = (params?: any) => api.get('/products', { params }).then(r => r.data);
+api.getCategories = () => api.get('/categories').then(r => r.data);
+
+// Order API Functions
 export const orderApi = {
   // Get all orders (paginated)
   getAll: async (page = 1): Promise<PaginatedOrders> => {
@@ -109,4 +175,5 @@ export const adminOrderApi = {
   },
 };
 
+export { api };
 export default api;
